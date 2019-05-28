@@ -7,6 +7,9 @@ public class MainPruebas {
 		
 		System.out.println("Nueva partida");
 		System.out.println(tableroPruebas.toString());
+		
+		System.out.println("El ganador es");
+		System.out.println(tableroPruebas.ganador());
 	}
 
 }

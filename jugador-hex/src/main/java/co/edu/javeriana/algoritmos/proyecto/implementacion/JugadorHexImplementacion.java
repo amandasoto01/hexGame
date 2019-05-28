@@ -9,7 +9,9 @@ public class JugadorHexImplementacion implements JugadorHex{
 
 	@Override
 	public Jugada jugar(Tablero tablero, ColorJugador color) {
-		// TODO Auto-generated method stub
+		/**
+		 * AQUI VA LA LOGICA PARA ESCOGER LA MEJOR JUGADA 
+		 **/
 		return null;
 	}
 
