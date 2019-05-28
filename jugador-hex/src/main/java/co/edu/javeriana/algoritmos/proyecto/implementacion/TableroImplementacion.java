@@ -22,7 +22,16 @@ public class TableroImplementacion implements Tablero{
 
 	@Override
 	public void aplicarJugada(Jugada jugada, ColorJugador colorJugador) {
-		// TODO Auto-generated method stub
+		if(jugada.isCambioColores()) {
+			/**Solo se hace un cambio de colores de los jugadores pero el tablero
+			 * se mantiene igual
+			 **/
+		} else {
+			/**
+			 * Asignarle el color a la casilla dada por el jugador
+			 **/
+			this.tableroHex[jugada.getFila()][jugada.getColumna()] = colorJugador;
+		}
 		return;
 	}
 
@@ -34,8 +43,9 @@ public class TableroImplementacion implements Tablero{
 
 	@Override
 	public ColorJugador casilla(int fila, int columna) {
-		// TODO Auto-generated method stub
-		return null;
+		if(fila < 0 || fila >= 11) return null;
+		if(columna < 0 || columna >= 11) return null;
+		return this.tableroHex[fila][columna];
 	}
 
 	public ColorJugador[][] getTableroHex() {
