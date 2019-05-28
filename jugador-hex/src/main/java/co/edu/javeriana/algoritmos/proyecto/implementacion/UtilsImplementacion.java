@@ -9,14 +9,14 @@ public class UtilsImplementacion {
 	}
 	
 	/**
-	 * DiagonalIzquierdaArriba -1,-1
+	 * Arriba 0,-1
 	 * Izquierda -1,0
-	 * Abajo 0,1
-	 * DiagonalDerechaAbajo 1,1
-	 * Derecha 1,0
-	 * Arriba 0,-1 
+	 * Diag-Izq-Abajo -1,1
+	 * Abajo 0, 1
+	 * Derecha 1, 0
+	 * Diag-Der-Arriba 1,-1
 	 **/
-	public final int movimientosX[] = {-1,-1,0,1,1,0};
+	public final int movimientosX[] = {0,-1,-1,0,1,1};
 	public final int movimientosY[] = {-1,0,1,1,0,-1};
 	public final int numMovimientos = 6;
 }
