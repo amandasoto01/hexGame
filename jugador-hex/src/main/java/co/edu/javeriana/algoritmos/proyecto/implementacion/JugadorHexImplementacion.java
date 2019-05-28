@@ -15,8 +15,7 @@ public class JugadorHexImplementacion implements JugadorHex{
 
 	@Override
 	public String nombreJugador() {
-		// TODO Auto-generated method stub
-		return null;
+		return "Amanda, William y Diego";
 	}
 
 }
