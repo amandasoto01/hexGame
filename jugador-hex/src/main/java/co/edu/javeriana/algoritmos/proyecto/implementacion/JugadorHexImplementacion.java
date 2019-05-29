@@ -46,19 +46,20 @@ public class JugadorHexImplementacion implements JugadorHex {
 		return fichas;
 	}
 
-	Pair PuentesInvisiblesPeligrosos(ColorJugador[][] mat, ColorJugador color,ColorJugador ColorEnemigo ,List<Pair> fichasMias) {
+	Pair PuentesInvisiblesPeligrosos(ColorJugador[][] mat, ColorJugador color, ColorJugador ColorEnemigo,
+			List<Pair> fichasMias) {
 		Pair casillaPeligro = new Pair(-1, -1);
 
 		for (Pair fichaVoy : fichasMias) {
 
 			/*---------------1--------------*/
 			if (mat[fichaVoy.getFirst() - 2][fichaVoy.getSecond() - 1] == color) {
-				if (mat[fichaVoy.getFirst() - 1][fichaVoy.getSecond()] == ColorEnemigo ||
-					 mat[fichaVoy.getFirst() - 1][fichaVoy.getSecond() - 1] == ColorEnemigo) {
+				if (mat[fichaVoy.getFirst() - 1][fichaVoy.getSecond()] == ColorEnemigo
+						|| mat[fichaVoy.getFirst() - 1][fichaVoy.getSecond() - 1] == ColorEnemigo) {
 
 					return (mat[fichaVoy.getFirst() - 1][fichaVoy.getSecond()] == ColorEnemigo)
-									? new Pair(fichaVoy.getFirst() - 1, fichaVoy.getSecond() - 1)
-									: new Pair(fichaVoy.getFirst() - 1, fichaVoy.getSecond());
+							? new Pair(fichaVoy.getFirst() - 1, fichaVoy.getSecond() - 1)
+							: new Pair(fichaVoy.getFirst() - 1, fichaVoy.getSecond());
 				}
 			}
 			/*---------------2--------------*/
@@ -133,14 +134,78 @@ public class JugadorHexImplementacion implements JugadorHex {
 
 	Pair calcularGrafoTentativo(Pair fichaDerecha, String sentido, ColorJugador[][] mat, ColorJugador color) {
 		boolean[][] casillasVisitadas = new boolean[11][11];
-		return rutaMasCorta(fichaDerecha, casillasVisitadas, color, mat, sentido);
+		for (int i = 0; i < casillasVisitadas.length; i++) {
+			for (int j = 0; j < casillasVisitadas[i].length; j++) {
+				casillasVisitadas[i][j] = false;
+			}
+		}
+		Pair casillaRespuesta = new Pair(0, 0);
+		rutaMasCorta(fichaDerecha, casillasVisitadas, color, mat, sentido, casillaRespuesta);
+		return casillaRespuesta;
 	}
 
-	Pair rutaMasCorta(Pair ficha, boolean[][] casillasVisitadas, ColorJugador color, ColorJugador[][] tablero,
-			String sentido) {
-		Pair l = new Pair(-1, -1);
+	int rutaMasCorta(Pair ficha, boolean[][] casillasVisitadas, ColorJugador color, ColorJugador[][] tablero,
+			String sentido, Pair casillaRespuesta) {
 
-		return l;
+		int ruta1 = 0, ruta2 = 0, ruta3 = 0;
+		if (ficha.getSecond() == 11) // evalua si la ficha esta en la ultima columna
+			return 1;
+		if (ficha.getSecond() == 10 && tablero[ficha.getFirst()][ficha.getSecond() + 1] == null
+				&& tablero[ficha.getFirst() + 1][ficha.getSecond() + 1] == null)// evalua si la ficha esta en la segunda
+																				// columna y las dos casillas
+																				// intermedias estan disponibles
+			return 1;
+		if (ficha.getSecond() > 11 || ficha.getSecond() < 1 || ficha.getFirst() < 1 || ficha.getFirst() > 11) // evalua
+																												// que
+																												// la
+																												// casilla
+																												// este
+																												// dentro
+																												// de la
+																												// matriz
+			return 0;
+		if (casillasVisitadas[ficha.getFirst()][ficha.getSecond()] == true) // si la casilla ya fue visitada no se tiene
+																			// en cuenta
+			return 0;
+
+		if (sentido == "Derecha")// Se evalua los 3 posibles caminos hacia la derecha de la ficha
+		{
+			if (tablero[ficha.getFirst() - 1][ficha.getSecond() + 1] != null
+					&& tablero[ficha.getFirst() + 1][ficha.getSecond() + 2] != null
+					&& tablero[ficha.getFirst() + 2][ficha.getSecond() + 1] != null)
+				return 0;
+			// ------ Ruta al 6 -------
+			if (tablero[ficha.getFirst() - 1][ficha.getSecond() + 1] == null
+					&& (tablero[ficha.getFirst() - 1][ficha.getSecond()] == null
+							&& tablero[ficha.getFirst() - 1][ficha.getSecond() + 1] == null)) {
+				casillasVisitadas[ficha.getFirst() - 1][ficha.getSecond() - 1] = true;
+				ruta1 += rutaMasCorta(new Pair(ficha.getFirst() - 1, ficha.getSecond() - 1), casillasVisitadas, color,
+						tablero, sentido) + 1; // ATento al +1
+			}
+			// ------ Ruta al 5 -------
+			if (tablero[ficha.getFirst() + 1][ficha.getSecond() + 2] == null
+					&& (tablero[ficha.getFirst()][ficha.getSecond() + 1] == null
+							&& tablero[ficha.getFirst() + 1][ficha.getSecond() + 1] == null)) {
+				casillasVisitadas[ficha.getFirst() + 1][ficha.getSecond() + 2] = true;
+				ruta2 += rutaMasCorta(new Pair(ficha.getFirst() + 1, ficha.getSecond() + 2), casillasVisitadas, color,
+						tablero, sentido) + 1;
+			}
+			// ------ Ruta al 4 -------
+			if (tablero[ficha.getFirst() + 2][ficha.getSecond() + 1] == null
+					&& (tablero[ficha.getFirst() + 1][ficha.getSecond()] == null
+							&& tablero[ficha.getFirst() + 1][ficha.getSecond() + 1] == null)) {
+				casillasVisitadas[ficha.getFirst() + 2][ficha.getSecond() + 1] = true;
+				ruta3 += rutaMasCorta(new Pair(ficha.getFirst() + 2, ficha.getSecond() + 1), casillasVisitadas, color,
+						tablero, sentido) + 1;
+			}
+			// Escoger el mas corto 'el que tenga menos saltos'
+			if (ruta1 < ruta2 && ruta1 < ruta3)
+				casillaRespuesta = new Pair(ficha.getFirst() - 1, ficha.getSecond() + 1);
+			if (ruta2 < ruta1 && ruta2 < ruta3)
+				casillaRespuesta = new Pair(ficha.getFirst() + 1, ficha.getSecond() + 2);
+			if (ruta3 < ruta2 && ruta3 < ruta1)
+				casillaRespuesta = new Pair(ficha.getFirst() + 2, ficha.getSecond() + 1);
+		}
 
 	}
 

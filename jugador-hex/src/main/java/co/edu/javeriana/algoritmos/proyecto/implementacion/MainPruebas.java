@@ -7,11 +7,11 @@ public class MainPruebas {
 
 	public static void main(String[] args) {
 		TableroImplementacion tableroPruebas = new TableroImplementacion();
-		
+
 		System.out.println("Nueva partida");
 		System.out.println(tableroPruebas.toString());
 		System.out.println("HOla");
-		
+
 		tableroPruebas.aplicarJugada(new Jugada(false, 5, 0), ColorJugador.BLANCO);
 		tableroPruebas.aplicarJugada(new Jugada(false, 5, 1), ColorJugador.BLANCO);
 		tableroPruebas.aplicarJugada(new Jugada(false, 6, 1), ColorJugador.BLANCO);
@@ -28,8 +28,8 @@ public class MainPruebas {
 		tableroPruebas.aplicarJugada(new Jugada(false, 6, 8), ColorJugador.BLANCO);
 		tableroPruebas.aplicarJugada(new Jugada(false, 6, 9), ColorJugador.BLANCO);
 		tableroPruebas.aplicarJugada(new Jugada(false, 5, 10), ColorJugador.BLANCO);
-		
-		System.out.println("El tablero actual es : " +  tableroPruebas.toString());
+
+		System.out.println("El tablero actual es : " + tableroPruebas.toString());
 		System.out.println("El ganador es");
 		System.out.println(tableroPruebas.ganador());
 	}
