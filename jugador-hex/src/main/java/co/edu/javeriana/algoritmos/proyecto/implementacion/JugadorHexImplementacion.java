@@ -150,20 +150,20 @@ public class JugadorHexImplementacion implements JugadorHex {
 		int ruta1 = 0, ruta2 = 0, ruta3 = 0;
 		if (ficha.getSecond() == 11) // evalua si la ficha esta en la ultima columna
 			return 1;
-		// evalua si la ficha esta en la segunda columna y las dos casillas intermedias estan disponibles
+		// evalua si la ficha esta en la segunda columna y las dos casillas intermedias
+		// estan disponibles
 		if (ficha.getSecond() == 10 && tablero[ficha.getFirst()][ficha.getSecond() + 1] == null
 				&& tablero[ficha.getFirst() + 1][ficha.getSecond() + 1] == null)
 			return 1;
 		// evalua que la casilla este dentro de la matriz
-		if (ficha.getSecond() > 11 || ficha.getSecond() < 1 || ficha.getFirst() < 1 || ficha.getFirst() > 11) 
+		if (ficha.getSecond() > 11 || ficha.getSecond() < 1 || ficha.getFirst() < 1 || ficha.getFirst() > 11)
 			return 0;
 		// si la casilla ya fue visitada no se tiene en cuenta
-		if (casillasVisitadas[ficha.getFirst()][ficha.getSecond()] == true) 
+		if (casillasVisitadas[ficha.getFirst()][ficha.getSecond()] == true)
 			return 0;
 
 		// Se evalua los 3 posibles caminos hacia la derecha de la ficha
-		if (sentido == "Derecha")
-		{
+		if (sentido == "Derecha") {
 			if (tablero[ficha.getFirst() - 1][ficha.getSecond() + 1] != null
 					&& tablero[ficha.getFirst() + 1][ficha.getSecond() + 2] != null
 					&& tablero[ficha.getFirst() + 2][ficha.getSecond() + 1] != null)
@@ -171,7 +171,7 @@ public class JugadorHexImplementacion implements JugadorHex {
 			// ------ Ruta al 6 -------
 			if (tablero[ficha.getFirst() - 1][ficha.getSecond() + 1] == null
 					&& (tablero[ficha.getFirst() - 1][ficha.getSecond()] == null
-					&& tablero[ficha.getFirst() - 1][ficha.getSecond() + 1] == null)) {
+							&& tablero[ficha.getFirst() - 1][ficha.getSecond() + 1] == null)) {
 				casillasVisitadas[ficha.getFirst() - 1][ficha.getSecond() - 1] = true;
 				ruta1 += rutaMasCorta(new Pair(ficha.getFirst() - 1, ficha.getSecond() - 1), casillasVisitadas, color,
 						tablero, sentido, casillaRespuesta) + 1; // ATento al +1
@@ -201,30 +201,45 @@ public class JugadorHexImplementacion implements JugadorHex {
 				casillaRespuesta = new Pair(ficha.getFirst() + 2, ficha.getSecond() + 1);
 		}
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		if(sentido=="Izquierda") //Se evalua los 3 posibles caminos hacia la izquierda de la ficha
-	        if(tablero[ficha.getFirst()-2][ficha.getSecond()-1] != null && tablero[ficha.getFirst()-1][ficha.getSecond()-2]!= null && tablero[ficha.getFirst()+1][ficha.getSecond()-1] != null)
-	        	return 0;
-	    	  //------ Ruta al 1 -------
-	        if (tablero[ficha.getFirst()-2][ficha.getSecond()-1] == null && (tablero[ficha.getFirst()-1][ficha.getSecond()] == null && tablero[ficha.getFirst()-1][ficha.getSecond()-1]==null))
-	            casillasVisitadas[ficha.getFirst()-2][ficha.getSecond()-1]=true;
-	        ruta1 += rutaMasCorta(new Pair(ficha.getFirst()-2,ficha.getSecond()-1), casillasVisitadas, color,
-					tablero, sentido, casillaRespuesta) + 1; // ATento al +1
-	        //------ Ruta al 2 -------
-	        if (tablero[ficha.getFirst()-1][ficha.getSecond()-2] == null && (tablero[ficha.getFirst()][ficha.getSecond()-1] == null && tablero[ficha.getFirst()-1][ficha.getSecond()-1]==null))   
-	            casillasVisitadas[ficha.getFirst()-1][ficha.getSecond()-2]=true;
-	            ruta2 += rutaMasCorta(new Pair(ficha.getFirst()-1,ficha.getSecond()-2), casillasVisitadas, color, tablero, sentido, casillaRespuesta) + 1;
-	        //------ Ruta al 3 -------
-	        if (tablero[ficha.getFirst()+1][ficha.getSecond()-1] == null && (tablero[ficha.getFirst()+1][ficha.getSecond()] == null && tablero[ficha.getFirst()][ficha.getSecond()-1] == null))   
-	            casillasVisitadas[ficha.getFirst()+1][ficha.getSecond()-1] = true;
-	            ruta3 += rutaMasCorta(new Pair(ficha.getFirst()+1,ficha.getSecond()+1), casillasVisitadas, color, tablero, sentido, casillaRespuesta) + 1;
-	        //Escoger el mas corto 'el que tenga menos saltos'	
-	        
-	        if(ruta1<ruta2 && ruta1<ruta3)
-	        	casillaRespuesta = new Pair(ficha.getFirst()-2,ficha.getSecond() - 1); 
-	        if(ruta2<ruta1 && ruta2<ruta3)
-	        	casillaRespuesta =  new Pair(ficha.getFirst()-1,ficha.getSecond() - 2);
-	        if(ruta3<ruta2 && ruta3<ruta1)
-	        	casillaRespuesta =  new Pair(ficha.getFirst()+1,ficha.getSecond() + 1);
+		if (sentido == "Izquierda") // Se evalua los 3 posibles caminos hacia la izquierda de la ficha
+		{
+			if (tablero[ficha.getFirst() - 2][ficha.getSecond() - 1] != null
+					&& tablero[ficha.getFirst() - 1][ficha.getSecond() - 2] != null
+					&& tablero[ficha.getFirst() + 1][ficha.getSecond() - 1] != null)
+				return 0;
+			// ------ Ruta al 1 -------
+			if (tablero[ficha.getFirst() - 2][ficha.getSecond() - 1] == null
+					&& (tablero[ficha.getFirst() - 1][ficha.getSecond()] == null
+							&& tablero[ficha.getFirst() - 1][ficha.getSecond() - 1] == null)) {
+				casillasVisitadas[ficha.getFirst() - 2][ficha.getSecond() - 1] = true;
+				ruta1 += rutaMasCorta(new Pair(ficha.getFirst() - 2, ficha.getSecond() - 1), casillasVisitadas, color,
+						tablero, sentido, casillaRespuesta) + 1; // ATento al +1
+			}
+			// ------ Ruta al 2 -------
+			if (tablero[ficha.getFirst() - 1][ficha.getSecond() - 2] == null
+					&& (tablero[ficha.getFirst()][ficha.getSecond() - 1] == null
+							&& tablero[ficha.getFirst() - 1][ficha.getSecond() - 1] == null)) {
+				casillasVisitadas[ficha.getFirst() - 1][ficha.getSecond() - 2] = true;
+				ruta2 += rutaMasCorta(new Pair(ficha.getFirst() - 1, ficha.getSecond() - 2), casillasVisitadas, color,
+						tablero, sentido, casillaRespuesta) + 1;
+			}
+			// ------ Ruta al 3 -------
+			if (tablero[ficha.getFirst() + 1][ficha.getSecond() - 1] == null
+					&& (tablero[ficha.getFirst() + 1][ficha.getSecond()] == null
+							&& tablero[ficha.getFirst()][ficha.getSecond() - 1] == null)) {
+				casillasVisitadas[ficha.getFirst() + 1][ficha.getSecond() - 1] = true;
+				ruta3 += rutaMasCorta(new Pair(ficha.getFirst() + 1, ficha.getSecond() + 1), casillasVisitadas, color,
+						tablero, sentido, casillaRespuesta) + 1;
+			}
+			// Escoger el mas corto 'el que tenga menos saltos'
+
+			if (ruta1 < ruta2 && ruta1 < ruta3)
+				casillaRespuesta = new Pair(ficha.getFirst() - 2, ficha.getSecond() - 1);
+			if (ruta2 < ruta1 && ruta2 < ruta3)
+				casillaRespuesta = new Pair(ficha.getFirst() - 1, ficha.getSecond() - 2);
+			if (ruta3 < ruta2 && ruta3 < ruta1)
+				casillaRespuesta = new Pair(ficha.getFirst() + 1, ficha.getSecond() + 1);
+		}
 
 	}
 
