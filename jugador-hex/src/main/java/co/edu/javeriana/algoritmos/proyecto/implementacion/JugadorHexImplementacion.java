@@ -1,6 +1,5 @@
 package co.edu.javeriana.algoritmos.proyecto.implementacion;
 
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -440,7 +439,7 @@ public class JugadorHexImplementacion implements JugadorHex {
 			if (ruta3 < ruta2 && ruta3 < ruta1)
 				casillaRespuesta = new Pair(ficha.getFirst() + 1, ficha.getSecond() - 1);
 		}
-
+		return ruta3;
 	}
 
 	@Override
