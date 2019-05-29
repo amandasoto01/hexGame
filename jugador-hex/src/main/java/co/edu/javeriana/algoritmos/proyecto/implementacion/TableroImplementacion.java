@@ -19,7 +19,7 @@ public class TableroImplementacion implements Tablero {
 		this.tableroHex = new ColorJugador[11][11];
 		this.utilsImplementacion = new UtilsImplementacion();
 	}
-
+	
 	public TableroImplementacion(ColorJugador[][] tableroHex) {
 		super();
 		this.utilsImplementacion = new UtilsImplementacion();

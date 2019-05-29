@@ -46,86 +46,100 @@ public class JugadorHexImplementacion implements JugadorHex {
 		return fichas;
 	}
 
-	Pair PuentesInvisiblesPeligrosos(ColorJugador[][] mat, ColorJugador color,ColorJugador ColorEnemigo ,List<Pair> fichasMias) {
+	Pair PuentesInvisiblesPeligrosos(ColorJugador[][] mat, ColorJugador color, ColorJugador ColorEnemigo,
+			List<Pair> fichasMias) {
 		Pair casillaPeligro = new Pair(-1, -1);
 
 		for (Pair fichaVoy : fichasMias) {
+			
+			/**fil 0  (A) no puede calcular el 1,2,6 
+		       col 0  (B) no puede calcular el 1,2,3 
+		       col 10 (C) no puede calcular el 4,5,6 
+		       fil 10 (D) no puede calcular el 3,4,5
+		       fil 1  (E) no puede calcular el 1
+		       col 1  (F) no puede calcular el 2
+		       col 9  (G) no puede calcular el 5
+		    	 fil 9  (H) no puede calcular el 4**/
 
 			/*---------------1--------------*/
-			if (mat[fichaVoy.getFirst() - 2][fichaVoy.getSecond() - 1] == color) {
-				if (mat[fichaVoy.getFirst() - 1][fichaVoy.getSecond()] == ColorEnemigo ||
-					 mat[fichaVoy.getFirst() - 1][fichaVoy.getSecond() - 1] == ColorEnemigo) {
+			if (fichaVoy.getFirst() != 0 || fichaVoy.getSecond() != 0 || fichaVoy.getFirst() != 1) {
+				if (mat[fichaVoy.getFirst() - 2][fichaVoy.getSecond() - 1] == color) {
+					if (mat[fichaVoy.getFirst() - 1][fichaVoy.getSecond()] == ColorEnemigo
+							|| mat[fichaVoy.getFirst() - 1][fichaVoy.getSecond() - 1] == ColorEnemigo) {
 
-					return (mat[fichaVoy.getFirst() - 1][fichaVoy.getSecond()] == ColorEnemigo)
-									? new Pair(fichaVoy.getFirst() - 1, fichaVoy.getSecond() - 1)
-									: new Pair(fichaVoy.getFirst() - 1, fichaVoy.getSecond());
+						return (mat[fichaVoy.getFirst() - 1][fichaVoy.getSecond()] == ColorEnemigo)
+								? new Pair(fichaVoy.getFirst() - 1, fichaVoy.getSecond() - 1)
+								: new Pair(fichaVoy.getFirst() - 1, fichaVoy.getSecond());
+					}
 				}
 			}
+
 			/*---------------2--------------*/
-			if (mat[fichaVoy.getFirst() - 1][fichaVoy.getSecond() + 2] == color) {
-				if (mat[fichaVoy.getFirst()][fichaVoy.getSecond() + 1] != null
-						&& mat[fichaVoy.getFirst()][fichaVoy.getSecond() + 1] != color
-						|| mat[fichaVoy.getFirst() - 1][fichaVoy.getSecond() + 1] != null
-								&& mat[fichaVoy.getFirst() - 1][fichaVoy.getSecond() + 1] != color) {
-					return (mat[fichaVoy.getFirst()][fichaVoy.getSecond() + 1] != null
-							&& mat[fichaVoy.getFirst()][fichaVoy.getSecond() + 1] != color)
-									? new Pair(fichaVoy.getFirst() - 1, fichaVoy.getSecond() + 1)
-									: new Pair(fichaVoy.getFirst(), fichaVoy.getSecond() + 1);
+			if (fichaVoy.getFirst() != 0 || fichaVoy.getSecond() != 0 || fichaVoy.getSecond() != 1) {
+				if (mat[fichaVoy.getFirst() - 1][fichaVoy.getSecond() - 2] == color) {
+					if (mat[fichaVoy.getFirst()][fichaVoy.getSecond() - 1] == ColorEnemigo
+							|| mat[fichaVoy.getFirst() - 1][fichaVoy.getSecond() - 1] == ColorEnemigo) {
+
+						return (mat[fichaVoy.getFirst()][fichaVoy.getSecond() - 1] == ColorEnemigo)
+								? new Pair(fichaVoy.getFirst() - 1, fichaVoy.getSecond() + 1)
+								: new Pair(fichaVoy.getFirst(), fichaVoy.getSecond() + 1);
+					}
 				}
 			}
 
 			/*---------------3--------------*/
-			if (mat[fichaVoy.getFirst() + 1][fichaVoy.getSecond() + 1] == color) {
-				if (mat[fichaVoy.getFirst()][fichaVoy.getSecond() + 1] != null
-						&& mat[fichaVoy.getFirst()][fichaVoy.getSecond() + 1] != color
-						|| mat[fichaVoy.getFirst() + 1][fichaVoy.getSecond()] != null
-								&& mat[fichaVoy.getFirst() + 1][fichaVoy.getSecond()] != color) {
-					return (mat[fichaVoy.getFirst()][fichaVoy.getSecond() + 1] != null
-							&& mat[fichaVoy.getFirst()][fichaVoy.getSecond() + 1] != color)
-									? new Pair(fichaVoy.getFirst() + 1, fichaVoy.getSecond())
-									: new Pair(fichaVoy.getFirst(), fichaVoy.getSecond() + 1);
+			if (fichaVoy.getSecond() != 0 || fichaVoy.getFirst() != 10 ) {
+				if (mat[fichaVoy.getFirst() + 1][fichaVoy.getSecond() - 1] == color) {
+					if (mat[fichaVoy.getFirst()][fichaVoy.getSecond() - 1] == ColorEnemigo
+							|| mat[fichaVoy.getFirst() + 1][fichaVoy.getSecond()] == ColorEnemigo) {
+
+						return (mat[fichaVoy.getFirst()][fichaVoy.getSecond() - 1] == ColorEnemigo)
+								? new Pair(fichaVoy.getFirst() + 1, fichaVoy.getSecond())
+								: new Pair(fichaVoy.getFirst(), fichaVoy.getSecond() + 1);
+					}
 				}
 			}
 
 			/*---------------4--------------*/
-			if (mat[fichaVoy.getFirst() + 2][fichaVoy.getSecond() - 1] == color) {
-				if (mat[fichaVoy.getFirst() + 1][fichaVoy.getSecond()] != null
-						&& mat[fichaVoy.getFirst() + 1][fichaVoy.getSecond()] != color
-						|| mat[fichaVoy.getFirst() + 1][fichaVoy.getSecond() - 1] != null
-								&& mat[fichaVoy.getFirst() + 1][fichaVoy.getSecond() - 1] != color) {
-					return (mat[fichaVoy.getFirst() + 1][fichaVoy.getSecond()] != null
-							&& mat[fichaVoy.getFirst()][fichaVoy.getSecond()] != color)
+			if (fichaVoy.getSecond() != 10 || fichaVoy.getFirst() != 10 || fichaVoy.getFirst()!=9) {
+				if (fichaVoy.getFirst() != 11) {
+					if (mat[fichaVoy.getFirst() + 2][fichaVoy.getSecond() + 1] == color) {
+						if (mat[fichaVoy.getFirst() + 1][fichaVoy.getSecond()] == ColorEnemigo
+								|| mat[fichaVoy.getFirst() + 1][fichaVoy.getSecond() + 1] == ColorEnemigo) {
+
+							return (mat[fichaVoy.getFirst() + 1][fichaVoy.getSecond()] == ColorEnemigo)
 									? new Pair(fichaVoy.getFirst() + 1, fichaVoy.getSecond() - 1)
 									: new Pair(fichaVoy.getFirst() + 1, fichaVoy.getSecond());
+						}
+					}
 				}
 			}
 
 			/*---------------5--------------*/
-			if (mat[fichaVoy.getFirst() + 1][fichaVoy.getSecond() - 2] == color) {
-				if (mat[fichaVoy.getFirst() + 1][fichaVoy.getSecond() - 1] != null
-						&& mat[fichaVoy.getFirst() + 1][fichaVoy.getSecond() - 1] != color
-						|| mat[fichaVoy.getFirst()][fichaVoy.getSecond() - 1] != null
-								&& mat[fichaVoy.getFirst()][fichaVoy.getSecond() - 1] != color) {
-					return (mat[fichaVoy.getFirst() + 1][fichaVoy.getSecond() - 1] != null
-							&& mat[fichaVoy.getFirst() + 1][fichaVoy.getSecond() - 1] != color)
-									? new Pair(fichaVoy.getFirst(), fichaVoy.getSecond() - 1)
-									: new Pair(fichaVoy.getFirst() + 1, fichaVoy.getSecond() - 1);
+			if (fichaVoy.getSecond() != 11 || fichaVoy.getSecond() != 10 || fichaVoy.getFirst()!=10 || fichaVoy.getSecond()!=9) {
+				if (mat[fichaVoy.getFirst() + 1][fichaVoy.getSecond() + 2] == color) {
+					if (mat[fichaVoy.getFirst() + 1][fichaVoy.getSecond() + 1] == ColorEnemigo
+							|| mat[fichaVoy.getFirst()][fichaVoy.getSecond() + 1] == ColorEnemigo) {
+
+						return (mat[fichaVoy.getFirst() + 1][fichaVoy.getSecond() + 1] == ColorEnemigo)
+								? new Pair(fichaVoy.getFirst(), fichaVoy.getSecond() - 1)
+								: new Pair(fichaVoy.getFirst() + 1, fichaVoy.getSecond() - 1);
+					}
 				}
 			}
 
 			/*---------------6--------------*/
-			if (mat[fichaVoy.getFirst() - 1][fichaVoy.getSecond() - 1] == color) {
-				if (mat[fichaVoy.getFirst()][fichaVoy.getSecond() - 1] != null
-						&& mat[fichaVoy.getFirst()][fichaVoy.getSecond() - 1] != color
-						|| mat[fichaVoy.getFirst() - 1][fichaVoy.getSecond()] != null
-								&& mat[fichaVoy.getFirst() - 1][fichaVoy.getSecond()] != color) {
-					return (mat[fichaVoy.getFirst()][fichaVoy.getSecond() - 1] != null
-							&& mat[fichaVoy.getFirst()][fichaVoy.getSecond() - 1] != color)
-									? new Pair(fichaVoy.getFirst() - 1, fichaVoy.getSecond())
-									: new Pair(fichaVoy.getFirst(), fichaVoy.getSecond() - 1);
+			if (fichaVoy.getFirst() != 0 || fichaVoy.getSecond() != 10) {
+				if (mat[fichaVoy.getFirst() - 1][fichaVoy.getSecond() + 1] == color) {
+					if (mat[fichaVoy.getFirst()][fichaVoy.getSecond() + 1] == ColorEnemigo
+							|| mat[fichaVoy.getFirst() - 1][fichaVoy.getSecond()] == ColorEnemigo) {
+
+						return (mat[fichaVoy.getFirst()][fichaVoy.getSecond() + 1] == ColorEnemigo)
+								? new Pair(fichaVoy.getFirst() - 1, fichaVoy.getSecond())
+								: new Pair(fichaVoy.getFirst(), fichaVoy.getSecond() - 1);
+					}
 				}
 			}
-
 		}
 
 		return casillaPeligro;
