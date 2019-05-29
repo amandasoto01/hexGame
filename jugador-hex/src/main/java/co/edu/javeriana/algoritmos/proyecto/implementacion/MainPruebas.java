@@ -10,6 +10,7 @@ public class MainPruebas {
 		
 		System.out.println("Nueva partida");
 		System.out.println(tableroPruebas.toString());
+		System.out.println("HOla");
 		
 		tableroPruebas.aplicarJugada(new Jugada(false, 5, 0), ColorJugador.BLANCO);
 		tableroPruebas.aplicarJugada(new Jugada(false, 5, 1), ColorJugador.BLANCO);
