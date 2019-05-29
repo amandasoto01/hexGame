@@ -42,13 +42,18 @@ public class JugadorHexImplementacion implements JugadorHex {
         int contFichasMias = fichasMias.size();
         int contFichasOponente = fichasOponente.size();
 
-        /* -------------------------- PRIMERA RONDA ----------------------- */
+        /* -------------------------- INICIO PRIMERA RONDA ----------------------- */
         int mitad = t.getTableroHex().length / 2;
+
+        /** Yo juego primero **/
         if (contFichasMias == 0 && contFichasOponente == 0) {
             // la primera jugada, se hace la jugada en el centro del tablero
             this.Puedocambiar = false;
             return new Jugada(false, mitad, mitad - 1);
-        } else if (contFichasMias == 0 && contFichasOponente == 1) {
+        }
+
+        /** Mi oponente jugó primero **/
+        if (contFichasMias == 0 && contFichasOponente == 1) {
             // El Oponente empieza
             if (mat[fichasOponente.get(0).getFirst()][fichasOponente.get(0)
                     .getSecond()] == mat[mitad][mitad] && color == ColorJugador.BLANCO
@@ -67,79 +72,81 @@ public class JugadorHexImplementacion implements JugadorHex {
                 }
 
             }
-            /* -------------------------- SEGUNDA RONDA ++ ----------------------- */
-        } else {
-            if (contFichasMias > 1 && contFichasOponente >= 1) {
-                Pair casilla = PuentesInvisiblesPeligrosos(mat, color, colorOponente, fichasMias);
+        }
+        /* -------------------------- FIN PRIMERA RONDA ----------------------- */
+
+        /* -------------------------- INICIO SEGUNDA RONDA O MAS ----------------------- */
+        System.out.println("Aqui segunda ronda");
+        if (contFichasMias > 1 && contFichasOponente >= 1) {
+            System.out.println("Aqui entré");
+            Pair casilla = PuentesInvisiblesPeligrosos(mat, color, colorOponente, fichasMias);
+            return new Jugada(false, casilla.getFirst(), casilla.getSecond());
+        }
+        System.out.println("Aqui segunda ronda parte 2");
+        if (color == ColorJugador.NEGRO) {
+            if (mitad > fichasOponente.get(contFichasOponente - 1).getSecond()) {
+                int menorColumna = 11;
+                Pair fichaMasIzquierda = new Pair(-1, -1);
+
+                for (Pair ficha : fichasMias) {
+                    if (ficha.getSecond() < menorColumna)
+                        fichaMasIzquierda.setFirst(ficha.getFirst());
+                    fichaMasIzquierda.setSecond(ficha.getSecond());
+                    menorColumna = ficha.getSecond();
+                }
+
+                Pair casilla = calcularGrafoTentativo(fichaMasIzquierda, "Izquierda", mat, color);
                 return new Jugada(false, casilla.getFirst(), casilla.getSecond());
-            }
+            } else {
+                int mayorColumna = -1;
+                Pair fichaMasDerecha = new Pair(-1, -1);
 
-            if (color == ColorJugador.NEGRO) {
-                if (mitad > fichasOponente.get(contFichasOponente - 1).getSecond()) {
-                    int menorColumna = 11;
-                    Pair fichaMasIzquierda = new Pair(-1, -1);
-
-                    for (Pair ficha : fichasMias) {
-                        if (ficha.getSecond() < menorColumna)
-                            fichaMasIzquierda.setFirst(ficha.getFirst());
-                        fichaMasIzquierda.setSecond(ficha.getSecond());
-                        menorColumna = ficha.getSecond();
+                for (Pair ficha : fichasMias) {
+                    if (ficha.getFirst() > mayorColumna) {
+                        fichaMasDerecha.setFirst(ficha.getFirst());
+                        fichaMasDerecha.setSecond(ficha.getSecond());
+                        mayorColumna = ficha.getSecond();
                     }
 
-                    Pair casilla =
-                            calcularGrafoTentativo(fichaMasIzquierda, "Izquierda", mat, color);
-                    return new Jugada(false, casilla.getFirst(), casilla.getSecond());
-                } else {
-                    int mayorColumna = -1;
-                    Pair fichaMasDerecha = new Pair(-1, -1);
-
-                    for (Pair ficha : fichasMias) {
-                        if (ficha.getFirst() > mayorColumna) {
-                            fichaMasDerecha.setFirst(ficha.getFirst());
-                            fichaMasDerecha.setSecond(ficha.getSecond());
-                            mayorColumna = ficha.getSecond();
-                        }
-
-                    }
-
-                    // Calculo grafo tentativo de los caminos mas cercanos al borde
-                    Pair casilla = calcularGrafoTentativo(fichaMasDerecha, "Derecha", mat, color);
-                    return new Jugada(false, casilla.getFirst(), casilla.getSecond());
                 }
-            }
 
-            if (color == ColorJugador.BLANCO) {
-                if (mitad > fichasOponente.get(contFichasOponente - 1).getFirst()) {
-                    int menorFila = 11;
-                    Pair fichaMasArriba = new Pair(-1, -1);
-
-                    for (Pair ficha : fichasMias) {
-                        if (ficha.getFirst() < menorFila) {
-                            fichaMasArriba.setFirst(ficha.getFirst());
-                            fichaMasArriba.setSecond(ficha.getSecond());
-                            menorFila = ficha.getFirst();
-                        }
-                    }
-                    Pair casilla = calcularGrafoTentativo(fichaMasArriba, "Arriba", mat, color);
-                    return new Jugada(false, casilla.getFirst(), casilla.getSecond());
-                } else {
-                    int mayorFila = 11;
-                    Pair fichaMasAbajo = new Pair(-1, -1);
-
-                    for (Pair ficha : fichasMias) {
-                        if (ficha.getFirst() > mayorFila) {
-                            fichaMasAbajo = ficha;
-                            mayorFila = ficha.getFirst();
-                        }
-                    }
-
-                    // Calculo grafo tentativo de los caminos mas cercanos al borde
-                    Pair casilla = calcularGrafoTentativo(fichaMasAbajo, "Abajo", mat, color);
-                    return new Jugada(false, casilla.getFirst(), casilla.getSecond());
-                }
+                // Calculo grafo tentativo de los caminos mas cercanos al borde
+                Pair casilla = calcularGrafoTentativo(fichaMasDerecha, "Derecha", mat, color);
+                return new Jugada(false, casilla.getFirst(), casilla.getSecond());
             }
         }
 
+        if (color == ColorJugador.BLANCO) {
+            if (mitad > fichasOponente.get(contFichasOponente - 1).getFirst()) {
+                int menorFila = 11;
+                Pair fichaMasArriba = new Pair(-1, -1);
+
+                for (Pair ficha : fichasMias) {
+                    if (ficha.getFirst() < menorFila) {
+                        fichaMasArriba.setFirst(ficha.getFirst());
+                        fichaMasArriba.setSecond(ficha.getSecond());
+                        menorFila = ficha.getFirst();
+                    }
+                }
+                Pair casilla = calcularGrafoTentativo(fichaMasArriba, "Arriba", mat, color);
+                return new Jugada(false, casilla.getFirst(), casilla.getSecond());
+            } else {
+                int mayorFila = 11;
+                Pair fichaMasAbajo = new Pair(-1, -1);
+
+                for (Pair ficha : fichasMias) {
+                    if (ficha.getFirst() > mayorFila) {
+                        fichaMasAbajo = ficha;
+                        mayorFila = ficha.getFirst();
+                    }
+                }
+
+                // Calculo grafo tentativo de los caminos mas cercanos al borde
+                Pair casilla = calcularGrafoTentativo(fichaMasAbajo, "Abajo", mat, color);
+                return new Jugada(false, casilla.getFirst(), casilla.getSecond());
+            }
+        }
+        /* -------------------------- FIN SEGUNDA RONDA O MAS ----------------------- */
         return null;
     }
 
@@ -323,7 +330,7 @@ public class JugadorHexImplementacion implements JugadorHex {
                 casillasVisitadas[ficha.getFirst() - 1][ficha.getSecond() - 1] = true;
                 ruta1 += rutaMasCorta(new Pair(ficha.getFirst() - 1, ficha.getSecond() - 1),
                         casillasVisitadas, color, tablero, sentido, casillaRespuesta) + 1; // ATento
-                                                                                           // al +1
+                // al +1
             }
             // ------ Ruta al 5 -------
             if (tablero[ficha.getFirst() + 1][ficha.getSecond() - 2] == null
@@ -355,7 +362,7 @@ public class JugadorHexImplementacion implements JugadorHex {
         }
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         if (sentido == "Izquierda") // Se evalua los 3 posibles caminos hacia la izquierda de la
-                                    // ficha
+        // ficha
         {
             if (tablero[ficha.getFirst() - 2][ficha.getSecond() + 1] != null
                     && tablero[ficha.getFirst() - 1][ficha.getSecond() + 2] != null
@@ -369,7 +376,7 @@ public class JugadorHexImplementacion implements JugadorHex {
                 casillasVisitadas[ficha.getFirst() - 2][ficha.getSecond() + 1] = true;
                 ruta1 += rutaMasCorta(new Pair(ficha.getFirst() - 2, ficha.getSecond() + 1),
                         casillasVisitadas, color, tablero, sentido, casillaRespuesta) + 1; // ATento
-                                                                                           // al +1
+                // al +1
             }
             // ------ Ruta al 2 -------
             if (tablero[ficha.getFirst() - 1][ficha.getSecond() + 2] == null
@@ -413,7 +420,7 @@ public class JugadorHexImplementacion implements JugadorHex {
                 casillasVisitadas[ficha.getFirst() - 2][ficha.getSecond() + 1] = true;
                 ruta1 += rutaMasCorta(new Pair(ficha.getFirst() - 2, ficha.getSecond() + 1),
                         casillasVisitadas, color, tablero, sentido, casillaRespuesta) + 1; // ATento
-                                                                                           // al +1
+                // al +1
             }
             // ------ Ruta al 2 -------
             if (tablero[ficha.getFirst() - 1][ficha.getSecond() + 2] == null
@@ -430,7 +437,7 @@ public class JugadorHexImplementacion implements JugadorHex {
                 casillasVisitadas[ficha.getFirst() - 1][ficha.getSecond() - 1] = true;
                 ruta3 += rutaMasCorta(new Pair(ficha.getFirst() - 1, ficha.getSecond() - 1),
                         casillasVisitadas, color, tablero, sentido, casillaRespuesta) + 1; // ATento
-                                                                                           // al +1
+                // al +1
             }
             // Escoger el mas corto 'el que tenga menos saltos'
 
