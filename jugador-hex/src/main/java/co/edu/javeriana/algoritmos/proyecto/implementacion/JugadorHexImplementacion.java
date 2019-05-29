@@ -31,7 +31,6 @@ public class JugadorHexImplementacion implements JugadorHex {
 			colorOponente = ColorJugador.BLANCO;
 		}
 	    
-
 		List<Pair> fichasOponente = BuscarFichasTablero (t.getTableroHex(), colorOponente);
 		
 		int contFichasMias = fichasMias.size();
