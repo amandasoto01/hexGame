@@ -180,7 +180,7 @@ public class JugadorHexImplementacion implements JugadorHex {
 							&& tablero[ficha.getFirst() - 1][ficha.getSecond() + 1] == null)) {
 				casillasVisitadas[ficha.getFirst() - 1][ficha.getSecond() - 1] = true;
 				ruta1 += rutaMasCorta(new Pair(ficha.getFirst() - 1, ficha.getSecond() - 1), casillasVisitadas, color,
-						tablero, sentido) + 1; // ATento al +1
+						tablero, sentido, casillaRespuesta) + 1; // ATento al +1
 			}
 			// ------ Ruta al 5 -------
 			if (tablero[ficha.getFirst() + 1][ficha.getSecond() + 2] == null
@@ -188,7 +188,7 @@ public class JugadorHexImplementacion implements JugadorHex {
 							&& tablero[ficha.getFirst() + 1][ficha.getSecond() + 1] == null)) {
 				casillasVisitadas[ficha.getFirst() + 1][ficha.getSecond() + 2] = true;
 				ruta2 += rutaMasCorta(new Pair(ficha.getFirst() + 1, ficha.getSecond() + 2), casillasVisitadas, color,
-						tablero, sentido) + 1;
+						tablero, sentido, casillaRespuesta) + 1;
 			}
 			// ------ Ruta al 4 -------
 			if (tablero[ficha.getFirst() + 2][ficha.getSecond() + 1] == null
@@ -196,7 +196,7 @@ public class JugadorHexImplementacion implements JugadorHex {
 							&& tablero[ficha.getFirst() + 1][ficha.getSecond() + 1] == null)) {
 				casillasVisitadas[ficha.getFirst() + 2][ficha.getSecond() + 1] = true;
 				ruta3 += rutaMasCorta(new Pair(ficha.getFirst() + 2, ficha.getSecond() + 1), casillasVisitadas, color,
-						tablero, sentido) + 1;
+						tablero, sentido, casillaRespuesta) + 1;
 			}
 			// Escoger el mas corto 'el que tenga menos saltos'
 			if (ruta1 < ruta2 && ruta1 < ruta3)
