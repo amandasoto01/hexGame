@@ -3,6 +3,8 @@ package co.edu.javeriana.algoritmos.proyecto.implementacion;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.text.StyledEditorKit.BoldAction;
+
 import co.edu.javeriana.algoritmos.proyecto.ColorJugador;
 import co.edu.javeriana.algoritmos.proyecto.Jugada;
 import co.edu.javeriana.algoritmos.proyecto.JugadorHex;
@@ -11,6 +13,12 @@ import co.edu.javeriana.algoritmos.proyecto.Tablero;
 public class JugadorHexImplementacion implements JugadorHex {
 
 	private TableroImplementacion t;
+	private Boolean Puedocambiar;
+
+	public JugadorHexImplementacion() {
+		super();
+		Puedocambiar=true;
+	}
 
 	@Override
 	public Jugada jugar(Tablero tablero, ColorJugador color) {
@@ -37,22 +45,33 @@ public class JugadorHexImplementacion implements JugadorHex {
 
 		/* -------------------------- PRIMERA RONDA ----------------------- */
 		int mitad = t.getTableroHex().length / 2;
-		if (contFichasMias == 0 && contFichasOponente == 0) {
+		if (contFichasMias == 0 && contFichasOponente ==  0) {
 			// la primera jugada, se hace la jugada en el centro del tablero
+			this.Puedocambiar =false;
 			return new Jugada(false, mitad, mitad - 1);
 		} else if (contFichasMias == 0 && contFichasOponente == 1) {
 			// El Oponente empieza
 			if (mat[fichasOponente.get(0).getFirst()][fichasOponente.get(0).getSecond()] == mat[mitad][mitad]
-					&& color == ColorJugador.BLANCO) {
+					&& color == ColorJugador.BLANCO && Puedocambiar==true) {
 				// Hizo la jugada en el centro del tablero, cambio de color // SE ASUME QUE: EL
 				// NEGRO SIEMPRE COMIENZA
+				Puedocambiar=false;
 				return new Jugada(true, mitad, mitad);
+				
 			} else {
 				// la casilla central esta libre, se hace la jugada
-				return new Jugada(false, mitad, mitad);
+				if(mat[mitad][mitad]==null)
+				{
+					return new Jugada(false, mitad, mitad);					
+				}
+				else
+				{
+					return new Jugada(false, mitad, mitad - 1);
+				}
+				
 			}
 			/* -------------------------- SEGUNDA RONDA ++ ----------------------- */
-		} else if (contFichasMias == contFichasOponente) {
+		} else {
 			if (contFichasMias > 1 && contFichasOponente >= 1) {
 				Pair casilla = PuentesInvisiblesPeligrosos(mat, color, colorOponente, fichasMias);
 				return new Jugada(false, casilla.getFirst(), casilla.getSecond());

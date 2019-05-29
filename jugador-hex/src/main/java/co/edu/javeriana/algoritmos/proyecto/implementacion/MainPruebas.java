@@ -15,6 +15,7 @@ public class MainPruebas {
 		
 		int cual=0;
 		Scanner input = new Scanner(System.in);
+		JugadorHexImplementacion jugador= new JugadorHexImplementacion();
 		while(tableroPruebas.ganador()==null)
 		{
 			System.out.println(tableroPruebas.toString());
@@ -31,12 +32,13 @@ public class MainPruebas {
 			}
 			else
 			{
-				System.out.println("JUGAROS 2");
-				System.out.print("Fila:");
-				int fil = input.nextInt();
-				System.out.print("Colu:");
-				int col = input.nextInt();
-				Jugada temp = new Jugada(false, fil, col);
+				//System.out.println("JUGAROS 2");
+				//System.out.print("Fila:");
+				//int fil = input.nextInt();
+				//System.out.print("Colu:");
+				//int col = input.nextInt();
+				Jugada temp = jugador.jugar(tableroPruebas, ColorJugador.NEGRO);
+				//Jugada temp = new Jugada(false, fil, col);
 				tableroPruebas.aplicarJugada(temp, ColorJugador.NEGRO);
 			}
 			cual++;
