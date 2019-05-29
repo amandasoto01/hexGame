@@ -1,5 +1,6 @@
 package co.edu.javeriana.algoritmos.proyecto.implementacion;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,12 +17,122 @@ public class JugadorHexImplementacion implements JugadorHex {
 	public Jugada jugar(Tablero tablero, ColorJugador color) {
 		/**
 		 * AQUI VA LA LOGICA PARA ESCOGER LA MEJOR JUGADA
-		 **/
+		 **/		
 		t = new TableroImplementacion();
 		llenarTablero(tablero);
+		
+		ColorJugador[][] mat = t.getTableroHex();
+		ColorJugador colorOponente;
+		List<Pair> fichasMias = BuscarFichasTablero (t.getTableroHex(),color);
+		
+		if(color == ColorJugador.BLANCO) {
+			colorOponente = ColorJugador.NEGRO;
+		}else {
+			colorOponente = ColorJugador.BLANCO;
+		}
+	    
 
+		List<Pair> fichasOponente = BuscarFichasTablero (t.getTableroHex(), colorOponente);
+		
+		int contFichasMias = fichasMias.size();
+		int contFichasOponente = fichasOponente.size();
+		
+
+		/* -------------------------- PRIMERA RONDA -----------------------*/
+		int mitad = t.getTableroHex().length/2;
+		if  (contFichasMias == 0 && contFichasOponente == 0) {
+			//la primera jugada, se hace la jugada en el centro del tablero
+			return new Jugada(false, mitad, mitad-1);
+		}else if (contFichasMias == 0 && contFichasOponente == 1) {
+			//El Oponente empieza
+			if(mat[fichasOponente.get(0).getFirst()][fichasOponente.get(0).getSecond()] 
+				== mat[mitad][mitad] && color == ColorJugador.BLANCO) {
+				//Hizo la jugada en el centro del tablero, cambio de color // SE ASUME QUE: EL NEGRO SIEMPRE COMIENZA
+				return new Jugada(true, mitad, mitad);
+			}else {
+				//la casilla central esta libre, se hace la jugada
+				return new Jugada(false, mitad, mitad);
+			} 		
+		    /* -------------------------- SEGUNDA RONDA ++ -----------------------*/ 
+		}else if(contFichasMias == contFichasOponente) {
+			if(contFichasMias > 1  && contFichasOponente >= 1 ) {
+				Pair casilla = PuentesInvisiblesPeligrosos(mat, color, colorOponente	, fichasMias);
+		        return new Jugada(false, casilla.getFirst(), casilla.getSecond());
+			}
+			
+			
+			 if(color == ColorJugador.NEGRO) {
+				 if(mitad > fichasOponente.get(contFichasOponente - 1).getSecond()) {
+					 int menorColumna = 11;
+					 Pair fichaMasIzquierda = new Pair(-1,-1);
+					 
+					 for(Pair ficha: fichasMias) {
+						 if(ficha.getSecond() < menorColumna)
+	                        fichaMasIzquierda.setFirst(ficha.getFirst());
+						 	fichaMasIzquierda.setSecond(ficha.getSecond());
+							menorColumna = ficha.getSecond();
+					 }
+					 
+					 Pair casilla = calcularGrafoTentativo ( fichaMasIzquierda, "Izquierda" , mat, color );
+		             return new Jugada(false, casilla.getFirst(), casilla.getSecond());
+				 }else {
+					 int mayorColumna = -1;
+					 Pair fichaMasDerecha = new Pair(-1,-1);    
+					 
+					 for(Pair ficha: fichasMias) {
+							if(ficha.getFirst() > mayorColumna) {
+								fichaMasDerecha.setFirst(ficha.getFirst());
+								fichaMasDerecha.setSecond(ficha.getSecond());
+								mayorColumna = ficha.getSecond();
+							}
+	                           	
+					 }
+					 
+					//Calculo grafo tentativo de los caminos mas cercanos al borde
+					Pair casilla = calcularGrafoTentativo ( fichaMasDerecha, "Derecha", mat, color );
+		            return new Jugada(false, casilla.getFirst(), casilla.getSecond());
+				 }
+			 }
+			 
+			 
+	          if(color == ColorJugador.BLANCO) {
+	        	  if(mitad > fichasOponente.get(contFichasOponente - 1).getFirst()) {
+	        		int menorFila = 11;
+	  			  	Pair fichaMasArriba = new Pair(-1,-1);
+	  			  	
+		  			  for(Pair ficha: fichasMias) {
+		  				if(ficha.getFirst() < menorFila) {
+		  			     	fichaMasArriba.setFirst(ficha.getFirst());
+		  			     	fichaMasArriba.setSecond(ficha.getSecond());
+		  			     	menorFila = ficha.getFirst();
+		  				}
+	  			  }
+	  			  Pair casilla = calcularGrafoTentativo ( fichaMasArriba, "Arriba", mat, color);
+                  return new Jugada(false, casilla.getFirst(), casilla.getSecond());
+	        	}else {
+	        		int mayorFila = 11;
+				  	Pair fichaMasAbajo = new Pair(-1,-1);
+	        		
+				  	for(Pair ficha: fichasMias) {
+				  		if(ficha.getFirst() > mayorFila) {
+				  			fichaMasAbajo=ficha;
+							mayorFila = ficha.getFirst();
+				  		}
+				  	}
+				  	
+				  //Calculo grafo tentativo de los caminos mas cercanos al borde
+				  	Pair casilla = calcularGrafoTentativo ( fichaMasAbajo, "Abajo", mat, color );
+	                return new Jugada(false, casilla.getFirst(), casilla.getSecond());
+	        	}
+	          }
+		}
+		
+		
 		return null;
 	}
+	
+
+  
 
 	void llenarTablero(Tablero tablero) {
 		ColorJugador[][] tt = new ColorJugador[11][11];
