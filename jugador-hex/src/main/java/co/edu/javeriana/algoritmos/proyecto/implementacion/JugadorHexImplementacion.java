@@ -241,6 +241,7 @@ public class JugadorHexImplementacion implements JugadorHex {
 				casillaRespuesta = new Pair(ficha.getFirst() + 1, ficha.getSecond() + 1);
 		}
 
+		
 	}
 
 	@Override
