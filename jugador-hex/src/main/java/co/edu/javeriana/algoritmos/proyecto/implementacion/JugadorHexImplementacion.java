@@ -155,15 +155,17 @@ public class JugadorHexImplementacion implements JugadorHex {
 
 		for (Pair fichaVoy : fichasMias) {
 
-			/**
-			 * fil 0 (A) no puede calcular el 1,2,6 col 0 (B) no puede calcular el 1,2,3 col
-			 * 10 (C) no puede calcular el 4,5,6 fil 10 (D) no puede calcular el 3,4,5 fil 1
-			 * (E) no puede calcular el 1 col 1 (F) no puede calcular el 2 col 9 (G) no
-			 * puede calcular el 5 fil 9 (H) no puede calcular el 4
-			 **/
-
+			/*fil 0  (A) no puede calcular el 1,2,6 
+		       col 0  (B) no puede calcular el 6,5,4 
+		       col 10 (C) no puede calcular el 1,2,3 
+		       fil 10 (D) no puede calcular el 3,4,5
+		       fil 1  (E) no puede calcular el 1
+		       col 1  (F) no puede calcular el 5
+		       col 9  (G) no puede calcular el 2
+		    	 fil 9  (H) no puede calcular el 4
+*/
 			/*---------------1--------------*/
-			if (fichaVoy.getFirst() != 0 || fichaVoy.getSecond() != 0 || fichaVoy.getFirst() != 1) {
+			if (fichaVoy.getFirst() != 0 || fichaVoy.getSecond() != 10 || fichaVoy.getFirst() != 1) {
 				if (mat[fichaVoy.getFirst() - 2][fichaVoy.getSecond() - 1] == color) {
 					if (mat[fichaVoy.getFirst() - 1][fichaVoy.getSecond()] == ColorEnemigo
 							|| mat[fichaVoy.getFirst() - 1][fichaVoy.getSecond() - 1] == ColorEnemigo) {
@@ -176,7 +178,7 @@ public class JugadorHexImplementacion implements JugadorHex {
 			}
 
 			/*---------------2--------------*/
-			if (fichaVoy.getFirst() != 0 || fichaVoy.getSecond() != 0 || fichaVoy.getSecond() != 1) {
+			if (fichaVoy.getFirst() != 0 || fichaVoy.getSecond() != 10 || fichaVoy.getSecond() != 9) {
 				if (mat[fichaVoy.getFirst() - 1][fichaVoy.getSecond() - 2] == color) {
 					if (mat[fichaVoy.getFirst()][fichaVoy.getSecond() - 1] == ColorEnemigo
 							|| mat[fichaVoy.getFirst() - 1][fichaVoy.getSecond() - 1] == ColorEnemigo) {
@@ -189,7 +191,7 @@ public class JugadorHexImplementacion implements JugadorHex {
 			}
 
 			/*---------------3--------------*/
-			if (fichaVoy.getSecond() != 0 || fichaVoy.getFirst() != 10) {
+			if (fichaVoy.getSecond() != 10 || fichaVoy.getFirst() != 10) {
 				if (mat[fichaVoy.getFirst() + 1][fichaVoy.getSecond() - 1] == color) {
 					if (mat[fichaVoy.getFirst()][fichaVoy.getSecond() - 1] == ColorEnemigo
 							|| mat[fichaVoy.getFirst() + 1][fichaVoy.getSecond()] == ColorEnemigo) {
@@ -202,7 +204,7 @@ public class JugadorHexImplementacion implements JugadorHex {
 			}
 
 			/*---------------4--------------*/
-			if (fichaVoy.getSecond() != 10 || fichaVoy.getFirst() != 10 || fichaVoy.getFirst() != 9) {
+			if (fichaVoy.getSecond() != 0 || fichaVoy.getFirst() != 10 || fichaVoy.getFirst() != 9) {
 				if (fichaVoy.getFirst() != 11) {
 					if (mat[fichaVoy.getFirst() + 2][fichaVoy.getSecond() + 1] == color) {
 						if (mat[fichaVoy.getFirst() + 1][fichaVoy.getSecond()] == ColorEnemigo
@@ -217,8 +219,7 @@ public class JugadorHexImplementacion implements JugadorHex {
 			}
 
 			/*---------------5--------------*/
-			if (fichaVoy.getSecond() != 11 || fichaVoy.getSecond() != 10 || fichaVoy.getFirst() != 10
-					|| fichaVoy.getSecond() != 9) {
+			if (fichaVoy.getSecond() != 0 || fichaVoy.getSecond() != 1 || fichaVoy.getFirst() != 10) {
 				if (mat[fichaVoy.getFirst() + 1][fichaVoy.getSecond() + 2] == color) {
 					if (mat[fichaVoy.getFirst() + 1][fichaVoy.getSecond() + 1] == ColorEnemigo
 							|| mat[fichaVoy.getFirst()][fichaVoy.getSecond() + 1] == ColorEnemigo) {
