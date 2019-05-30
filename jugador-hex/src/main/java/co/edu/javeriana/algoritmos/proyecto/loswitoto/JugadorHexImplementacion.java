@@ -43,8 +43,8 @@ public class JugadorHexImplementacion implements JugadorHex {
             Pair jugadaFinal = casillaVacia();
             jugada = new Jugada(false, jugadaFinal.getFirst(), jugadaFinal.getSecond());
             // System.out.println("Error: " + e.toString());
-            System.out.println("Error: ");
-            e.printStackTrace();
+            // System.out.println("Error: ");
+            // e.printStackTrace();
         }
         return jugada;
     }
@@ -207,7 +207,7 @@ public class JugadorHexImplementacion implements JugadorHex {
             }
 
             /*---------------6--------------*/
-            if (fichaVoy.getFirst() != 0 && fichaVoy.getSecond() != 10) {
+            if (fichaVoy.getFirst() >= 1 && fichaVoy.getSecond() >= 1) {
                 if (mat[fichaVoy.getFirst() - 1][fichaVoy.getSecond() - 1] == color) {
 
                     if (mat[fichaVoy.getFirst() - 1][fichaVoy.getSecond() + 0] != null
@@ -402,7 +402,7 @@ public class JugadorHexImplementacion implements JugadorHex {
                     return 99;
                 }
             }
-            if (ficha.getSecond() >= 2) {
+            if (ficha.getFirst() >= 1) {
                 if (tablero[ficha.getFirst() + 0][ficha.getSecond() + 1] != null
                         && tablero[ficha.getFirst() - 1][ficha.getSecond() + 1] != null
                         && tablero[ficha.getFirst() - 1][ficha.getSecond() + 0] != null) {
@@ -434,7 +434,7 @@ public class JugadorHexImplementacion implements JugadorHex {
             }
 
             // ------ Ruta al 3 -------
-            if (ficha.getFirst() >= 1 && ficha.getSecond() <= 9) {
+            if (ficha.getFirst() <= 9 && ficha.getSecond() <= 9) {
                 if (tablero[ficha.getFirst() + 1][ficha.getSecond() + 1] == null
                         && (tablero[ficha.getFirst() + 1][ficha.getSecond()] == null
                                 && tablero[ficha.getFirst()][ficha.getSecond() + 1] == null)) {

@@ -17,16 +17,20 @@ public class MainPruebas {
         int cual = 0;
         Scanner input = new Scanner(System.in);
         JugadorHexImplementacion jugador = new JugadorHexImplementacion();
+        JugadorHexImplementacion jugador2 = new JugadorHexImplementacion();
         ColorJugador IA = ColorJugador.NEGRO, yo = ColorJugador.BLANCO;
         while (tableroPruebas.ganador() == null) {
             System.out.println(tableroPruebas.toString());
             if (cual % 2 == 0) {
-                System.out.println("JUGAROS 1");
-                System.out.print("Fila:");
-                int fil = input.nextInt();
-                System.out.print("Colu:");
-                int col = input.nextInt();
-                Jugada temp = new Jugada(false, fil, col);
+                // System.out.println("JUGAROS 1");
+                // System.out.print("Fila:");
+                // int fil = input.nextInt();
+                // System.out.print("Colu:");
+                // int col = input.nextInt();
+                // Jugada temp = new Jugada(false, fil, col);
+                // tableroPruebas.aplicarJugada(temp, yo);
+
+                Jugada temp = jugador2.jugar(tableroPruebas, yo);
                 tableroPruebas.aplicarJugada(temp, yo);
 
             } else {
