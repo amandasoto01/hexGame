@@ -42,6 +42,9 @@ public class JugadorHexImplementacion implements JugadorHex {
             /** En caso de no encontrar una jugada **/
             Pair jugadaFinal = casillaVacia();
             jugada = new Jugada(false, jugadaFinal.getFirst(), jugadaFinal.getSecond());
+            // System.out.println("Error: " + e.toString());
+            System.out.print("Traza: ");
+            e.printStackTrace();
         }
         return jugada;
     }
@@ -249,7 +252,7 @@ public class JugadorHexImplementacion implements JugadorHex {
         int ruta1 = 0, ruta2 = 0, ruta3 = 0;
 
         // La ficha no se sale del tablero
-        if (utilsImplementacion.posicionValida(ficha.getFirst(), ficha.getSecond()) != false) {
+        if (utilsImplementacion.posicionValida(ficha.getFirst(), ficha.getSecond()) == false) {
             return 0;
         }
 
@@ -688,7 +691,9 @@ public class JugadorHexImplementacion implements JugadorHex {
                 }
 
                 Pair casilla = calcularGrafoTentativo(fichaMasIzquierda, "Izquierda", mat, color);
-                return new Jugada(false, casilla.getFirst(), casilla.getSecond());
+                if (casilla.getFirst() != -1 && casilla.getSecond() != -1) {
+                    return new Jugada(false, casilla.getFirst(), casilla.getSecond());
+                }
             } else {
                 int mayorColumna = -1;
                 Pair fichaMasDerecha = new Pair(-1, -1);
@@ -704,7 +709,9 @@ public class JugadorHexImplementacion implements JugadorHex {
 
                 // Calculo grafo tentativo de los caminos mas cercanos al borde
                 Pair casilla = calcularGrafoTentativo(fichaMasDerecha, "Derecha", mat, color);
-                return new Jugada(false, casilla.getFirst(), casilla.getSecond());
+                if (casilla.getFirst() != -1 && casilla.getSecond() != -1) {
+                    return new Jugada(false, casilla.getFirst(), casilla.getSecond());
+                }
             }
         }
 
@@ -725,7 +732,9 @@ public class JugadorHexImplementacion implements JugadorHex {
                     }
                 }
                 Pair casilla = calcularGrafoTentativo(fichaMasArriba, "Arriba", mat, color);
-                return new Jugada(false, casilla.getFirst(), casilla.getSecond());
+                if (casilla.getFirst() != -1 && casilla.getSecond() != -1) {
+                    return new Jugada(false, casilla.getFirst(), casilla.getSecond());
+                }
             } else {
                 int mayorFila = 11;
                 Pair fichaMasAbajo = new Pair(-1, -1);
@@ -739,7 +748,9 @@ public class JugadorHexImplementacion implements JugadorHex {
 
                 // Calculo grafo tentativo de los caminos mas cercanos al borde
                 Pair casilla = calcularGrafoTentativo(fichaMasAbajo, "Abajo", mat, color);
-                return new Jugada(false, casilla.getFirst(), casilla.getSecond());
+                if (casilla.getFirst() != -1 && casilla.getSecond() != -1) {
+                    return new Jugada(false, casilla.getFirst(), casilla.getSecond());
+                }
             }
         }
         /* -------------------------- FIN SEGUNDA RONDA O MAS ----------------------- */
