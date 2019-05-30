@@ -83,6 +83,7 @@ public class JugadorHexImplementacion implements JugadorHex {
          **/
         Pair casillaPeligrosa = PuentesInvisiblesPeligrosos(mat, color, colorOponente, fichasMias);
         if (casillaPeligrosa.getFirst() != -1 && casillaPeligrosa.getSecond() != -1) {
+            System.out.println("Hay una casilla peligrosa");
             return new Jugada(false, casillaPeligrosa.getFirst(), casillaPeligrosa.getSecond());
         }
 
