@@ -81,12 +81,10 @@ public class JugadorHexImplementacion implements JugadorHex {
          * Primero reviso que no haya algun puente peligroso que pueda hacer el rival Si el rival
          * tiene un puente peligroso entonces bloquearselo
          **/
-        // if (contFichasMias > 1 && contFichasOponente >= 1) {
         Pair casillaPeligrosa = PuentesInvisiblesPeligrosos(mat, color, colorOponente, fichasMias);
         if (casillaPeligrosa.getFirst() != -1 && casillaPeligrosa.getSecond() != -1) {
             return new Jugada(false, casillaPeligrosa.getFirst(), casillaPeligrosa.getSecond());
         }
-        // }
 
         /**
          * Ahora si no hay puentes peligrosos miro dependiendo del color cual es la casilla mas
