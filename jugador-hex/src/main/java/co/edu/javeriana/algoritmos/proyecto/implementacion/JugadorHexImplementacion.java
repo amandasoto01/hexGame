@@ -13,10 +13,15 @@ public class JugadorHexImplementacion implements JugadorHex {
 
     private TableroImplementacion t;
     private Boolean Puedocambiar;
+    private Pair ultimaJugada;
+
+    private ColorJugador[][] tableroAnterior;
 
     public JugadorHexImplementacion() {
         super();
         Puedocambiar = true;
+        tableroAnterior = new ColorJugador[11][11];
+        ultimaJugada = new Pair(-1, -1);
     }
 
     @Override
@@ -38,6 +43,8 @@ public class JugadorHexImplementacion implements JugadorHex {
         }
 
         List<Pair> fichasOponente = BuscarFichasTablero(t.getTableroHex(), colorOponente);
+        // Calcular la ultima ficha enemiga
+        this.tableroAnterior = mat;
 
         int contFichasMias = fichasMias.size();
         int contFichasOponente = fichasOponente.size();
@@ -55,14 +62,11 @@ public class JugadorHexImplementacion implements JugadorHex {
         /** Mi oponente jugó primero **/
         if (contFichasMias == 0 && contFichasOponente == 1) {
             // El Oponente empieza
-            if (mat[fichasOponente.get(0).getFirst()][fichasOponente.get(0)
-                    .getSecond()] == mat[mitad][mitad] && color == ColorJugador.BLANCO
-                    && Puedocambiar == true) {
+            if (color == ColorJugador.BLANCO && Puedocambiar == true) {
                 // Hizo la jugada en el centro del tablero, cambio de color // SE ASUME QUE: EL
                 // NEGRO SIEMPRE COMIENZA
                 Puedocambiar = false;
                 return new Jugada(true, mitad, mitad);
-
             } else {
                 // la casilla central esta libre, se hace la jugada
                 if (mat[mitad][mitad] == null) {
@@ -70,7 +74,6 @@ public class JugadorHexImplementacion implements JugadorHex {
                 } else {
                     return new Jugada(false, mitad, mitad - 1);
                 }
-
             }
         }
         /* -------------------------- FIN PRIMERA RONDA ----------------------- */
@@ -83,7 +86,6 @@ public class JugadorHexImplementacion implements JugadorHex {
          **/
         Pair casillaPeligrosa = PuentesInvisiblesPeligrosos(mat, color, colorOponente, fichasMias);
         if (casillaPeligrosa.getFirst() != -1 && casillaPeligrosa.getSecond() != -1) {
-            System.out.println("Hay una casilla peligrosa");
             return new Jugada(false, casillaPeligrosa.getFirst(), casillaPeligrosa.getSecond());
         }
 
@@ -183,6 +185,10 @@ public class JugadorHexImplementacion implements JugadorHex {
                 if (mat[i][j] == color) {
                     fichas.add(new Pair(i, j));
                 }
+
+                if (tableroAnterior[i][j] != mat[i][j] && mat[i][j] != null && mat[i][j] != color) {
+                    this.ultimaJugada = new Pair(i, j);
+                }
             }
         }
         return fichas;
@@ -203,13 +209,19 @@ public class JugadorHexImplementacion implements JugadorHex {
             /*---------------1--------------*/
             if (fichaVoy.getFirst() != 0 && fichaVoy.getSecond() != 10
                     && fichaVoy.getFirst() != 1) {
-                if (mat[fichaVoy.getFirst() - 2][fichaVoy.getSecond() - 1] == color) {
-                    if (mat[fichaVoy.getFirst() - 1][fichaVoy.getSecond()] == ColorEnemigo
-                            || mat[fichaVoy.getFirst() - 1][fichaVoy.getSecond()
-                                    - 1] == ColorEnemigo) {
+                if (mat[fichaVoy.getFirst() - 2][fichaVoy.getSecond() + 1] == color) {
 
+                    if (mat[fichaVoy.getFirst() - 1][fichaVoy.getSecond()] != null
+                            && mat[fichaVoy.getFirst() - 1][fichaVoy.getSecond() + 1] != null) {
+                        // No hacer nada
+                    } else if (mat[fichaVoy.getFirst() - 1][fichaVoy.getSecond()] == color
+                            || mat[fichaVoy.getFirst() - 1][fichaVoy.getSecond() + 1] == color) {
+                        // No hago nada
+                    } else if (mat[fichaVoy.getFirst() - 1][fichaVoy.getSecond()] == ColorEnemigo
+                            || mat[fichaVoy.getFirst() - 1][fichaVoy.getSecond()
+                                    + 1] == ColorEnemigo) {
                         return (mat[fichaVoy.getFirst() - 1][fichaVoy.getSecond()] == ColorEnemigo)
-                                ? new Pair(fichaVoy.getFirst() - 1, fichaVoy.getSecond() - 1)
+                                ? new Pair(fichaVoy.getFirst() - 1, fichaVoy.getSecond() + 1)
                                 : new Pair(fichaVoy.getFirst() - 1, fichaVoy.getSecond());
                     }
                 }
@@ -218,27 +230,46 @@ public class JugadorHexImplementacion implements JugadorHex {
             /*---------------2--------------*/
             if (fichaVoy.getFirst() != 0 && fichaVoy.getSecond() != 10
                     && fichaVoy.getSecond() != 9) {
-                if (mat[fichaVoy.getFirst() - 1][fichaVoy.getSecond() - 2] == color) {
-                    if (mat[fichaVoy.getFirst()][fichaVoy.getSecond() - 1] == ColorEnemigo
-                            || mat[fichaVoy.getFirst() - 1][fichaVoy.getSecond()
-                                    - 1] == ColorEnemigo) {
+                if (mat[fichaVoy.getFirst() - 1][fichaVoy.getSecond() + 2] == color) {
 
-                        return (mat[fichaVoy.getFirst()][fichaVoy.getSecond() - 1] == ColorEnemigo)
-                                ? new Pair(fichaVoy.getFirst() - 1, fichaVoy.getSecond() + 1)
-                                : new Pair(fichaVoy.getFirst(), fichaVoy.getSecond() + 1);
+                    if (mat[fichaVoy.getFirst() - 1][fichaVoy.getSecond() + 1] != null
+                            && mat[fichaVoy.getFirst()][fichaVoy.getSecond() + 1] != null) {
+                        // No hacer nada
+                    } else if (mat[fichaVoy.getFirst() - 1][fichaVoy.getSecond() + 1] == color
+                            || mat[fichaVoy.getFirst()][fichaVoy.getSecond() + 1] == color) {
+                        // No hago nada
+                    } else if (mat[fichaVoy.getFirst() - 1][fichaVoy.getSecond()
+                            + 1] == ColorEnemigo
+                            || mat[fichaVoy.getFirst()][fichaVoy.getSecond() + 1] == ColorEnemigo) {
+                        return (mat[fichaVoy.getFirst() - 1][fichaVoy.getSecond()
+                                + 1] == ColorEnemigo)
+                                        ? new Pair(fichaVoy.getFirst(), fichaVoy.getSecond() + 1)
+                                        : new Pair(fichaVoy.getFirst() - 1,
+                                                fichaVoy.getSecond() + 1);
                     }
                 }
             }
 
             /*---------------3--------------*/
             if (fichaVoy.getSecond() != 10 && fichaVoy.getFirst() != 10) {
-                if (mat[fichaVoy.getFirst() + 1][fichaVoy.getSecond() - 1] == color) {
-                    if (mat[fichaVoy.getFirst()][fichaVoy.getSecond() - 1] == ColorEnemigo
-                            || mat[fichaVoy.getFirst() + 1][fichaVoy.getSecond()] == ColorEnemigo) {
+                if (mat[fichaVoy.getFirst() + 1][fichaVoy.getSecond() + 1] == color) {
 
-                        return (mat[fichaVoy.getFirst()][fichaVoy.getSecond() - 1] == ColorEnemigo)
-                                ? new Pair(fichaVoy.getFirst() + 1, fichaVoy.getSecond())
-                                : new Pair(fichaVoy.getFirst(), fichaVoy.getSecond() + 1);
+                    if (mat[fichaVoy.getFirst() + 0][fichaVoy.getSecond() + 1] != null
+                            && mat[fichaVoy.getFirst() + 1][fichaVoy.getSecond() + 0] != null) {
+                        // No hacer nada
+                    } else if (mat[fichaVoy.getFirst() + 0][fichaVoy.getSecond() + 1] == color
+                            || mat[fichaVoy.getFirst() + 1][fichaVoy.getSecond() + 0] == color) {
+                        // No hago nada
+                    } else if (mat[fichaVoy.getFirst() + 0][fichaVoy.getSecond()
+                            + 1] == ColorEnemigo
+                            || mat[fichaVoy.getFirst() + 1][fichaVoy.getSecond()
+                                    + 0] == ColorEnemigo) {
+                        return (mat[fichaVoy.getFirst() + 0][fichaVoy.getSecond()
+                                + 1] == ColorEnemigo)
+                                        ? new Pair(fichaVoy.getFirst() + 1,
+                                                fichaVoy.getSecond() + 0)
+                                        : new Pair(fichaVoy.getFirst() + 0,
+                                                fichaVoy.getSecond() + 1);
                     }
                 }
             }
@@ -246,19 +277,24 @@ public class JugadorHexImplementacion implements JugadorHex {
             /*---------------4--------------*/
             if (fichaVoy.getSecond() != 0 && fichaVoy.getFirst() != 10
                     || fichaVoy.getFirst() != 9) {
-                if (fichaVoy.getFirst() != 11) {
-                    if (mat[fichaVoy.getFirst() + 2][fichaVoy.getSecond() + 1] == color) {
-                        if (mat[fichaVoy.getFirst() + 1][fichaVoy.getSecond()] == ColorEnemigo
-                                || mat[fichaVoy.getFirst() + 1][fichaVoy.getSecond()
-                                        + 1] == ColorEnemigo) {
+                if (mat[fichaVoy.getFirst() + 2][fichaVoy.getSecond() - 1] == color) {
 
-                            return (mat[fichaVoy.getFirst() + 1][fichaVoy
-                                    .getSecond()] == ColorEnemigo)
-                                            ? new Pair(fichaVoy.getFirst() + 1,
-                                                    fichaVoy.getSecond() - 1)
-                                            : new Pair(fichaVoy.getFirst() + 1,
-                                                    fichaVoy.getSecond());
-                        }
+                    if (mat[fichaVoy.getFirst() + 1][fichaVoy.getSecond() - 1] != null
+                            && mat[fichaVoy.getFirst() + 1][fichaVoy.getSecond() + 0] != null) {
+                        // No hacer nada
+                    } else if (mat[fichaVoy.getFirst() + 1][fichaVoy.getSecond() - 1] == color
+                            || mat[fichaVoy.getFirst() + 1][fichaVoy.getSecond() + 0] == color) {
+                        // No hago nada
+                    } else if (mat[fichaVoy.getFirst() + 1][fichaVoy.getSecond()
+                            - 1] == ColorEnemigo
+                            || mat[fichaVoy.getFirst() + 1][fichaVoy.getSecond()
+                                    + 0] == ColorEnemigo) {
+                        return (mat[fichaVoy.getFirst() + 1][fichaVoy.getSecond()
+                                - 1] == ColorEnemigo)
+                                        ? new Pair(fichaVoy.getFirst() + 1,
+                                                fichaVoy.getSecond() + 0)
+                                        : new Pair(fichaVoy.getFirst() + 1,
+                                                fichaVoy.getSecond() - 1);
                     }
                 }
             }
@@ -266,13 +302,22 @@ public class JugadorHexImplementacion implements JugadorHex {
             /*---------------5--------------*/
             if (fichaVoy.getSecond() != 0 && fichaVoy.getSecond() != 1
                     || fichaVoy.getFirst() != 10) {
-                if (mat[fichaVoy.getFirst() + 1][fichaVoy.getSecond() + 2] == color) {
-                    if (mat[fichaVoy.getFirst() + 1][fichaVoy.getSecond() + 1] == ColorEnemigo
-                            || mat[fichaVoy.getFirst()][fichaVoy.getSecond() + 1] == ColorEnemigo) {
+                if (mat[fichaVoy.getFirst() + 1][fichaVoy.getSecond() - 2] == color) {
 
+                    if (mat[fichaVoy.getFirst() + 1][fichaVoy.getSecond() - 1] != null
+                            && mat[fichaVoy.getFirst() + 0][fichaVoy.getSecond() - 1] != null) {
+                        // No hacer nada
+                    } else if (mat[fichaVoy.getFirst() + 1][fichaVoy.getSecond() - 1] == color
+                            || mat[fichaVoy.getFirst() + 0][fichaVoy.getSecond() - 1] == color) {
+                        // No hago nada
+                    } else if (mat[fichaVoy.getFirst() + 1][fichaVoy.getSecond()
+                            - 1] == ColorEnemigo
+                            || mat[fichaVoy.getFirst() + 0][fichaVoy.getSecond()
+                                    - 1] == ColorEnemigo) {
                         return (mat[fichaVoy.getFirst() + 1][fichaVoy.getSecond()
-                                + 1] == ColorEnemigo)
-                                        ? new Pair(fichaVoy.getFirst(), fichaVoy.getSecond() - 1)
+                                - 1] == ColorEnemigo)
+                                        ? new Pair(fichaVoy.getFirst() + 0,
+                                                fichaVoy.getSecond() - 1)
                                         : new Pair(fichaVoy.getFirst() + 1,
                                                 fichaVoy.getSecond() - 1);
                     }
@@ -281,18 +326,28 @@ public class JugadorHexImplementacion implements JugadorHex {
 
             /*---------------6--------------*/
             if (fichaVoy.getFirst() != 0 && fichaVoy.getSecond() != 10) {
-                if (mat[fichaVoy.getFirst() - 1][fichaVoy.getSecond() + 1] == color) {
-                    if (mat[fichaVoy.getFirst()][fichaVoy.getSecond() + 1] == ColorEnemigo
-                            || mat[fichaVoy.getFirst() - 1][fichaVoy.getSecond()] == ColorEnemigo) {
+                if (mat[fichaVoy.getFirst() - 1][fichaVoy.getSecond() - 1] == color) {
 
-                        return (mat[fichaVoy.getFirst()][fichaVoy.getSecond() + 1] == ColorEnemigo)
-                                ? new Pair(fichaVoy.getFirst() - 1, fichaVoy.getSecond())
-                                : new Pair(fichaVoy.getFirst(), fichaVoy.getSecond() - 1);
+                    if (mat[fichaVoy.getFirst() - 1][fichaVoy.getSecond() + 0] != null
+                            && mat[fichaVoy.getFirst() + 0][fichaVoy.getSecond() - 1] != null) {
+                        // No hacer nada
+                    } else if (mat[fichaVoy.getFirst() - 1][fichaVoy.getSecond() + 0] == color
+                            || mat[fichaVoy.getFirst() + 0][fichaVoy.getSecond() - 1] == color) {
+                        // No hago nada
+                    } else if (mat[fichaVoy.getFirst() - 1][fichaVoy.getSecond()
+                            + 0] == ColorEnemigo
+                            || mat[fichaVoy.getFirst() + 0][fichaVoy.getSecond()
+                                    - 1] == ColorEnemigo) {
+                        return (mat[fichaVoy.getFirst() + 0][fichaVoy.getSecond()
+                                - 1] == ColorEnemigo)
+                                        ? new Pair(fichaVoy.getFirst() - 1,
+                                                fichaVoy.getSecond() + 0)
+                                        : new Pair(fichaVoy.getFirst() + 0,
+                                                fichaVoy.getSecond() - 1);
                     }
                 }
             }
         }
-
         return casillaPeligro;
     }
 
