@@ -3,6 +3,7 @@ package co.edu.javeriana.algoritmos.proyecto.implementacion;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import co.edu.javeriana.algoritmos.proyecto.ColorJugador;
 import co.edu.javeriana.algoritmos.proyecto.Jugada;
@@ -585,6 +586,16 @@ public class JugadorHexImplementacion implements JugadorHex {
     }
 
     public Pair casillaVacia() {
+
+        Random rand = new Random();
+        for (int i = 0; i < 10; ++i) {
+            int xRand = rand.nextInt(11);
+            int yRand = rand.nextInt(11);
+            if (t.getTableroHex()[xRand][yRand] == null) {
+                return new Pair(xRand, yRand);
+            }
+        }
+
         for (int i = 0; i < t.getTableroHex().length; i++) {
             for (int j = 0; j < t.getTableroHex().length; j++) {
                 if (t.getTableroHex()[i][j] == null) {
