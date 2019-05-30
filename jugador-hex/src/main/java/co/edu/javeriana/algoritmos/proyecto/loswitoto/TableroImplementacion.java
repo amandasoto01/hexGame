@@ -1,4 +1,4 @@
-package co.edu.javeriana.algoritmos.proyecto.implementacion;
+package co.edu.javeriana.algoritmos.proyecto.loswitoto;
 
 import java.util.Arrays;
 import java.util.LinkedList;

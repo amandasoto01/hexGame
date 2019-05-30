@@ -1,5 +1,5 @@
 
-package co.edu.javeriana.algoritmos.proyecto.implementacion;
+package co.edu.javeriana.algoritmos.proyecto.loswitoto;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +35,7 @@ public class JugadorHexImplementacion implements JugadorHex {
 
     @Override
     public Jugada jugar(Tablero tablero, ColorJugador color) {
-        Jugada jugada = new Jugada(-1, -1);
+        Jugada jugada = null;
         try {
             jugada = jugarSeguro(tablero, color);
         } catch (Exception e) {
