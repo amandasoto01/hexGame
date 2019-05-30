@@ -42,7 +42,7 @@ public class JugadorHexImplementacion implements JugadorHex {
             /** En caso de no encontrar una jugada **/
             Pair jugadaFinal = casillaVacia();
             jugada = new Jugada(false, jugadaFinal.getFirst(), jugadaFinal.getSecond());
-            // System.out.println("Error: " + e.toString());
+            System.out.println("Error: " + e.toString());
             // System.out.print("Traza: ");
             // e.printStackTrace();
         }
