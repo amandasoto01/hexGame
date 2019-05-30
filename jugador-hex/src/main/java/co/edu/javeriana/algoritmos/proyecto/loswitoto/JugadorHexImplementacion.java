@@ -43,8 +43,8 @@ public class JugadorHexImplementacion implements JugadorHex {
             Pair jugadaFinal = casillaVacia();
             jugada = new Jugada(false, jugadaFinal.getFirst(), jugadaFinal.getSecond());
             // System.out.println("Error: " + e.toString());
-            System.out.print("Traza: ");
-            e.printStackTrace();
+            // System.out.print("Traza: ");
+            // e.printStackTrace();
         }
         return jugada;
     }
