@@ -42,9 +42,9 @@ public class JugadorHexImplementacion implements JugadorHex {
             /** En caso de no encontrar una jugada **/
             Pair jugadaFinal = casillaVacia();
             jugada = new Jugada(false, jugadaFinal.getFirst(), jugadaFinal.getSecond());
-            System.out.println("Error: " + e.toString());
-            // System.out.print("Traza: ");
-            // e.printStackTrace();
+            // System.out.println("Error: " + e.toString());
+            System.out.println("Error: ");
+            e.printStackTrace();
         }
         return jugada;
     }
@@ -158,7 +158,7 @@ public class JugadorHexImplementacion implements JugadorHex {
 
             /*---------------4--------------*/
             if (fichaVoy.getSecond() != 0 && fichaVoy.getFirst() != 10
-                    || fichaVoy.getFirst() != 9) {
+                    && fichaVoy.getFirst() != 9) {
                 if (mat[fichaVoy.getFirst() + 2][fichaVoy.getSecond() - 1] == color) {
 
                     if (mat[fichaVoy.getFirst() + 1][fichaVoy.getSecond() - 1] != null
@@ -183,7 +183,7 @@ public class JugadorHexImplementacion implements JugadorHex {
 
             /*---------------5--------------*/
             if (fichaVoy.getSecond() != 0 && fichaVoy.getSecond() != 1
-                    || fichaVoy.getFirst() != 10) {
+                    && fichaVoy.getFirst() != 10) {
                 if (mat[fichaVoy.getFirst() + 1][fichaVoy.getSecond() - 2] == color) {
 
                     if (mat[fichaVoy.getFirst() + 1][fichaVoy.getSecond() - 1] != null
@@ -588,6 +588,31 @@ public class JugadorHexImplementacion implements JugadorHex {
         return 0;
     }
 
+    public Pair crearPuente(List<Pair> fichasMias, ColorJugador color, ColorJugador[][] mat) {
+        UtilsImplementacion utilsImplementacion = new UtilsImplementacion();
+        for (int i = 0; i < fichasMias.size(); i++) {
+            for (int j = 0; j < utilsImplementacion.puentesNumMovimientos; j++) {
+                if (utilsImplementacion.posicionValida(
+                        fichasMias.get(i).getFirst() + utilsImplementacion.puentesMovimientosX[j],
+                        fichasMias.get(i).getSecond()
+                                + utilsImplementacion.puentesMovimientosY[j])) {
+                    if (mat[fichasMias.get(i).getFirst()
+                            + utilsImplementacion.puentesMovimientosX[j]][fichasMias.get(i)
+                                    .getSecond()
+                                    + utilsImplementacion.puentesMovimientosY[j]] == null) {
+                        return new Pair(
+                                fichasMias.get(i).getFirst()
+                                        + utilsImplementacion.puentesMovimientosX[j],
+                                fichasMias.get(i).getSecond()
+                                        + utilsImplementacion.puentesMovimientosY[j]);
+                    }
+
+                }
+            }
+        }
+        return new Pair(-1, -1);
+    }
+
     public Pair casillaVacia() {
 
         Random rand = new Random();
@@ -756,7 +781,11 @@ public class JugadorHexImplementacion implements JugadorHex {
         /* -------------------------- FIN SEGUNDA RONDA O MAS ----------------------- */
 
         /** En caso de no encontrar una jugada **/
-        Pair jugadaFinal = casillaVacia();
+        Pair jugadaFinal = crearPuente(fichasMias, color, mat);
+        if (jugadaFinal.getFirst() != -1 && jugadaFinal.getSecond() != -1) {
+            return new Jugada(false, jugadaFinal.getFirst(), jugadaFinal.getSecond());
+        }
+        jugadaFinal = casillaVacia();
         return new Jugada(false, jugadaFinal.getFirst(), jugadaFinal.getSecond());
     }
 

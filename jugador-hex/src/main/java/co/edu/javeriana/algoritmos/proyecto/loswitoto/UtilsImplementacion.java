@@ -21,4 +21,15 @@ public class UtilsImplementacion {
         -1, 0, 1, 1, 0, -1
     };
     public final int numMovimientos = 6;
+
+    /**
+     * Movimientos para crear puentes
+     **/
+    public final int puentesMovimientosX[] = {
+        -2, -1, 1, 2, 1, -1
+    };
+    public final int puentesMovimientosY[] = {
+        1, 2, 1, -1, -2, -1
+    };
+    public final int puentesNumMovimientos = 6;
 }
