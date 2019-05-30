@@ -76,13 +76,22 @@ public class JugadorHexImplementacion implements JugadorHex {
         /* -------------------------- FIN PRIMERA RONDA ----------------------- */
 
         /* -------------------------- INICIO SEGUNDA RONDA O MAS ----------------------- */
-        System.out.println("Aqui segunda ronda");
-        if (contFichasMias > 1 && contFichasOponente >= 1) {
-            System.out.println("Aqui entré");
-            Pair casilla = PuentesInvisiblesPeligrosos(mat, color, colorOponente, fichasMias);
-            return new Jugada(false, casilla.getFirst(), casilla.getSecond());
+
+        /**
+         * Primero reviso que no haya algun puente peligroso que pueda hacer el rival Si el rival
+         * tiene un puente peligroso entonces bloquearselo
+         **/
+        // if (contFichasMias > 1 && contFichasOponente >= 1) {
+        Pair casillaPeligrosa = PuentesInvisiblesPeligrosos(mat, color, colorOponente, fichasMias);
+        if (casillaPeligrosa.getFirst() != -1 && casillaPeligrosa.getSecond() != -1) {
+            return new Jugada(false, casillaPeligrosa.getFirst(), casillaPeligrosa.getSecond());
         }
-        System.out.println("Aqui segunda ronda parte 2");
+        // }
+
+        /**
+         * Ahora si no hay puentes peligrosos miro dependiendo del color cual es la casilla mas
+         * optima en la que puedo realizar una jugada
+         **/
         if (color == ColorJugador.NEGRO) {
             if (mitad > fichasOponente.get(contFichasOponente - 1).getSecond()) {
                 int menorColumna = 11;
@@ -116,6 +125,10 @@ public class JugadorHexImplementacion implements JugadorHex {
             }
         }
 
+        /**
+         * Ahora si no hay puentes peligrosos miro dependiendo del color cual es la casilla mas
+         * optima en la que puedo realizar una jugada
+         **/
         if (color == ColorJugador.BLANCO) {
             if (mitad > fichasOponente.get(contFichasOponente - 1).getFirst()) {
                 int menorFila = 11;
@@ -147,7 +160,10 @@ public class JugadorHexImplementacion implements JugadorHex {
             }
         }
         /* -------------------------- FIN SEGUNDA RONDA O MAS ----------------------- */
-        return null;
+
+        /** En caso de no encontrar una jugada **/
+        Pair jugadaFinal = casillaVacia();
+        return new Jugada(false, jugadaFinal.getFirst(), jugadaFinal.getSecond());
     }
 
     void llenarTablero(Tablero tablero) {
@@ -186,8 +202,8 @@ public class JugadorHexImplementacion implements JugadorHex {
              * (H) no puede calcular el 4
              */
             /*---------------1--------------*/
-            if (fichaVoy.getFirst() != 0 || fichaVoy.getSecond() != 10
-                    || fichaVoy.getFirst() != 1) {
+            if (fichaVoy.getFirst() != 0 && fichaVoy.getSecond() != 10
+                    && fichaVoy.getFirst() != 1) {
                 if (mat[fichaVoy.getFirst() - 2][fichaVoy.getSecond() - 1] == color) {
                     if (mat[fichaVoy.getFirst() - 1][fichaVoy.getSecond()] == ColorEnemigo
                             || mat[fichaVoy.getFirst() - 1][fichaVoy.getSecond()
@@ -201,8 +217,8 @@ public class JugadorHexImplementacion implements JugadorHex {
             }
 
             /*---------------2--------------*/
-            if (fichaVoy.getFirst() != 0 || fichaVoy.getSecond() != 10
-                    || fichaVoy.getSecond() != 9) {
+            if (fichaVoy.getFirst() != 0 && fichaVoy.getSecond() != 10
+                    && fichaVoy.getSecond() != 9) {
                 if (mat[fichaVoy.getFirst() - 1][fichaVoy.getSecond() - 2] == color) {
                     if (mat[fichaVoy.getFirst()][fichaVoy.getSecond() - 1] == ColorEnemigo
                             || mat[fichaVoy.getFirst() - 1][fichaVoy.getSecond()
@@ -216,7 +232,7 @@ public class JugadorHexImplementacion implements JugadorHex {
             }
 
             /*---------------3--------------*/
-            if (fichaVoy.getSecond() != 10 || fichaVoy.getFirst() != 10) {
+            if (fichaVoy.getSecond() != 10 && fichaVoy.getFirst() != 10) {
                 if (mat[fichaVoy.getFirst() + 1][fichaVoy.getSecond() - 1] == color) {
                     if (mat[fichaVoy.getFirst()][fichaVoy.getSecond() - 1] == ColorEnemigo
                             || mat[fichaVoy.getFirst() + 1][fichaVoy.getSecond()] == ColorEnemigo) {
@@ -229,7 +245,7 @@ public class JugadorHexImplementacion implements JugadorHex {
             }
 
             /*---------------4--------------*/
-            if (fichaVoy.getSecond() != 0 || fichaVoy.getFirst() != 10
+            if (fichaVoy.getSecond() != 0 && fichaVoy.getFirst() != 10
                     || fichaVoy.getFirst() != 9) {
                 if (fichaVoy.getFirst() != 11) {
                     if (mat[fichaVoy.getFirst() + 2][fichaVoy.getSecond() + 1] == color) {
@@ -249,7 +265,7 @@ public class JugadorHexImplementacion implements JugadorHex {
             }
 
             /*---------------5--------------*/
-            if (fichaVoy.getSecond() != 0 || fichaVoy.getSecond() != 1
+            if (fichaVoy.getSecond() != 0 && fichaVoy.getSecond() != 1
                     || fichaVoy.getFirst() != 10) {
                 if (mat[fichaVoy.getFirst() + 1][fichaVoy.getSecond() + 2] == color) {
                     if (mat[fichaVoy.getFirst() + 1][fichaVoy.getSecond() + 1] == ColorEnemigo
@@ -265,7 +281,7 @@ public class JugadorHexImplementacion implements JugadorHex {
             }
 
             /*---------------6--------------*/
-            if (fichaVoy.getFirst() != 0 || fichaVoy.getSecond() != 10) {
+            if (fichaVoy.getFirst() != 0 && fichaVoy.getSecond() != 10) {
                 if (mat[fichaVoy.getFirst() - 1][fichaVoy.getSecond() + 1] == color) {
                     if (mat[fichaVoy.getFirst()][fichaVoy.getSecond() + 1] == ColorEnemigo
                             || mat[fichaVoy.getFirst() - 1][fichaVoy.getSecond()] == ColorEnemigo) {
@@ -494,6 +510,17 @@ public class JugadorHexImplementacion implements JugadorHex {
             }
         }
         return ruta3;
+    }
+
+    public Pair casillaVacia() {
+        for (int i = 0; i < t.getTableroHex().length; i++) {
+            for (int j = 0; j < t.getTableroHex().length; j++) {
+                if (t.getTableroHex()[i][j] == null) {
+                    return new Pair(i, j);
+                }
+            }
+        }
+        return null;
     }
 
     @Override
